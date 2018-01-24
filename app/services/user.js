@@ -6,7 +6,7 @@ app.service('user', function($rootScope) {
 	var role;
 	var token;
 	var timestamp;
-	var expirationMin = "60";
+	var expirationMin = "60000";
 	$rootScope.userData;
 	$rootScope.headers = {
 		"Client-Service": "frontend-client",

@@ -77,6 +77,17 @@ app.config(['$routeProvider',
 			},
 			templateUrl: 'templates/items.html',
 			controller: 'ItemController'
+		}).
+		when('/purchaseentries', {
+			resolve: {
+				check: function($location, user) {
+					if (!user.isUserLoggedIn()) {
+						$location.path('/login');
+					}
+				},
+			},
+			templateUrl: 'templates/purchase.html',
+			controller: 'PurchaseController'
 		}).otherwise({
 			template: '404'
 		});

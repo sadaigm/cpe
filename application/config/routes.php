@@ -74,4 +74,10 @@ $route['authenticate']['post'] = "User_Controller/auth_user";
 $route['users'] = "User_Controller/index";
 $route['auth']['post'] = "Auth/login";
 $route['auth']['post'] = "Auth/register";
+$route['purchaseList'] = "PurchaseEntry/index";
+$route['getProductNames'] = "PurchaseEntry/getProductNames";
 $route['addPurchaseEntry']['post'] = "PurchaseEntry/store";
+$route['editPurchaseEntry/(:any)'] = "PurchaseEntry/edit/$1";
+$route['updatePurchaseEntry/(:any)']['put'] = "PurchaseEntry/update/$1";
+$route['deletePurchaseEntry/(:any)']['delete'] = "PurchaseEntry/delete/$1";
+

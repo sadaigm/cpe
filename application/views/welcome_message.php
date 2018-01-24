@@ -38,6 +38,7 @@
 
 	<!-- App Controller -->
 	<script src="app/controllers/ItemController.js"></script>
+	<script src="app/controllers/PurchaseController.js"></script>
 	<script src="app/controllers/smart_table.js"></script>
 	 <script src="app/controllers/login.js"></script>
 	 <script src="app/controllers/register.js"></script>
@@ -48,7 +49,7 @@
 	<script src="app/3party/cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
  	<script src="app/3party/cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.min.js"></script> 
 <link rel="stylesheet"  href="app/3party/css/product_item.css">
 
 </head>
@@ -64,19 +65,21 @@
 				</button>
 				<a class="navbar-brand" href="#/">{{title}}</a>
 			</div>
-			<div ng-if="isloggedin" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
+			<div  class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul ng-if="isloggedin" class="nav navbar-nav">
 					<li><a href="#/">Home</a></li>
 					<!-- <li><a href="#/smarttable">Smart Table</a></li> -->
 					<li><a href="#/listitems">Item</a></li>
 					<li><a href="#/items">List of Items</a></li>
-					<li ><a href="#/logout">Logout</a></li>
+					<li><a href="#/purchaseentries">Purchase Entry</a></li>
+					
 				</ul>
-			</div>
-			<div ng-if="!isloggedin" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<!-- </div>
+			<div  class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> -->
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#/register">Register</a></li>
-					<li><a href="#/login">Login</a></li>
+					<li ng-if="isloggedin"><a href="#/logout">Logout</a></li>
+					<li ng-if="!isloggedin"><a href="#/register">Register</a></li>
+					<li ng-if="!isloggedin"><a href="#/login">Login</a></li>
 					</ul>
 			</div>
 		</div>

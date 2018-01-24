@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class PurchaseEntry extends CI_Controller {
 
 	public $table_name ="purchase_entry";
+	public $item_table ="items";
 	public $id_pk ="id";
 	public function index()
 	{
@@ -52,6 +53,38 @@ class PurchaseEntry extends CI_Controller {
 				$respStatus = $response;
 			}
 		}
+		// }
+		echo json_encode($respStatus);
+	}
+
+	public function getProductNames()
+	{
+		$response = $this->authenticate();
+		if($response['status'] == 200){
+				$this->load->database();
+				$condition = array();
+				if(!empty($this->input->get("user"))){
+					$user = $this->input->get("user");
+					$this->db->where('user',$user);
+					$condition['user'] = $user;
+				}
+
+				$query = $this->db->get_where($this->item_table,$condition);
+				$data['data'] = $query->result();
+				if ($query->num_rows() > 0)
+				{
+					$productNames = array();
+				   foreach ($query->result() as $row)
+				   {
+				      $productNames[] = array('title' => $row->title, 'idfk'=> $row->id);
+				      
+				   }
+				}
+				$respStatus['response']=$query->result();
+			}
+			else {
+				$respStatus = $response;
+			}
 		// }
 		echo json_encode($respStatus);
 	}

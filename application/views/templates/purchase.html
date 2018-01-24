@@ -1,0 +1,322 @@
+<div  id="item_page" class="container">
+  <div class="row">
+      <div class="col-lg-12 margin-tb">
+          <div class="pull-left">
+              <h1>Purchase Management</h1>
+          </div>
+      </div>
+  </div>
+<div class="row">
+  <div class="col-lg-12 margin-tb">
+  <div  class="btn-group pull-right" role="group" aria-label="Export"  style="padding-top:30px">
+    <button type="button" title="EXPORT OPTIONS" class="btn btn-primary"><i class="fa fa-download"></i></button>
+    <button type="button" title="EXCEL" ng-click="exportData('excel')" class="btn btn-default"><i class="fa fa-file-excel-o"  style="color:green"></i></button>
+    <button type="button" title="CSV" ng-click="exportData('csv')" class="btn btn-default"><i class="fa fa-file-text-o"  style="color:#428bca"></i></button>
+    <!-- <button type="button" ng-click="exportData('tab')" class="btn btn-default">TAB</button> -->
+    <button type="button" title="PDF" ng-click="exportData('pdf')" class="btn btn-default"><i class="fa fa-file-pdf-o"  style="color:#b94a48"></i></button>
+    <button type="button" title="PRINT" ng-click="exportData('print')" class="btn btn-default"><i class="fa fa-print" style="color: #607D8B;"></i></button>
+  </div>
+  </div>
+  </div>
+<div class="row">
+    <div class="col-lg-12 margin-tb">
+        <!-- <div class="pull-left">
+            <h1>Item Management</h1>
+        </div> -->
+        <div class="pull-right"   style="padding-top:10px">
+            <div class="box-tools" style="display:inline-table">
+              <div class="input-group">
+                  <input type="text" class="form-control input-sm ng-valid ng-dirty" size="10" placeholder="Search" ng-change="searchDB()" ng-model="searchText" name="table_search" title="" tooltip="" data-original-title="Min character length is 3">
+                  <span class="input-group-addon"><i class="fa fa-search"></i> Search</span>
+              </div>
+            </div>
+            <button class="btn btn-success" ng-click="getProductNames()" data-toggle="modal" data-target="#add-item" ><i class="fa fa-file-o"></i> New</button>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="margin-tb">
+      <div class="table-responsive">
+  <div class="gridStyle" ng-grid="gridOptions">
+<table id="product_items" class="table table-bordered table-responsive pagin-table table-striped table-hover" >
+    <thead>
+      <tr class="success">
+           <th><input type="checkbox" ng-model="allItemsSelected" ng-change="selectAll()"></th>
+            <th>No</th>
+            <th>Title</th>
+            <!-- <th>Description</th> -->
+            <!-- <th>Type</th> -->
+            <th>Amount</th>
+            <!-- <th>User</th> -->
+            <!-- <th>Quantity</th> -->
+            <th >Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr dir-paginate="value in data | itemsPerPage:5" total-items="totalItems">
+           <td><input type="checkbox" ng-model="value.isChecked" ng-change="selectEntity($index)"></td>
+            <td>{{ $index + 1 }}</td>
+            <td>{{ value.title }}</td>
+            <!-- <td>{{ value.description }}</td> -->
+            <!-- <td>{{ value.item_type }}</td> -->
+            <td>{{ value.purchase_amount }}</td>
+            <!-- <td>{{ value.user }}</td> -->
+            <!-- <td>{{ value.quantity }}</td> -->
+            <td>
+            <button data-toggle="modal" ng-click="edit(value.id)" data-target="#edit-item" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</button>
+            <button ng-click="remove(value,$index)" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<dir-pagination-controls class="pull-right" on-page-change="pageChanged(newPageNumber)" template-url="templates/dirPagination.html" ></dir-pagination-controls>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- <div>
+<h3>Selected Item : <small></small></h3>
+<ul class="list-group">
+  <li ng-repeat="selected in selected_item" class="list-group-item">{{ selected.title }}</li>
+
+</ul>
+</div> -->
+</div>
+<!-- <div class="modal" id="create-user"  role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              <h4 class="modal-title" id="myModalLabel">Create Item</h4>
+          </div>
+          <div class="modal-body">
+          </div>
+          </div>
+          </div>
+          </div> -->
+
+<!-- Create Modal -->
+
+<div class="modal" id="purchase-item"  role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="POST" name="purchaseItemForm" role="form" ng-submit="purchaseItem()">
+        <div class="modal-header">
+          <button type="button" ng-click="resetItem()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myModalLabel">Purchase Item </h4>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="control-group product-control-group">
+                  <label  for="name">Title</label>
+                  <input type="text" class="form-control sm-input" name="title" placeholder="Name" ng-model="form.title" required>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="control-group product-control-group">
+                  <label  for="purchasedate">Purchase Date</label>
+                  <!-- <input type="text" class="form-control sm-input" name="description" placeholder="Purchase Date" ng-model="form.purchasedate" required> -->
+                  <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Choose a date" ng-model="form.purchasedate" required />
+                        <span class="input-group-addon" style="cursor: pointer">
+                        <i class="fa fa-lg fa-calendar"></i>
+                        </span>
+                    </div>
+                </datepicker>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="item_type">Type of Product</label>
+                  <input type="text" class="form-control sm-input" name="item_type" placeholder="Type of Product" ng-model="form.item_type" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="price">Price of Product</label>
+                  <input type="text" ng-keyup="calculatePurchaseAmount()" class="form-control sm-input" name="price" placeholder="Price of Product" ng-model="form.price" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="quantity">Quantity</label>
+                  <input type="text" ng-keyup="calculatePurchaseAmount()" class="form-control sm-input" name="quantity" placeholder="Quantity of Product" ng-model="form.quantity" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="purchase_amount">Purchase Amount</label>
+                  <input type="text" class="form-control sm-input" name="purchase_amount" placeholder="Purchase Amount" ng-model="form.purchase_amount" required>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" ng-click="resetItem()" class="btn btn-default btn-xs" data-dismiss="modal">Close</button>
+          <button type="submit" ng-disabled="purchaseItemForm.$invalid" class="btn btn-primary btn-xs">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+<div class="modal" id="add-item"  role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="POST" name="addItem" role="form" ng-submit="saveAdd()">
+              <input ng-model="form.idfk" type="hidden" placeholder="Name" name="name" class="form-control" />
+            <div class="modal-header">
+                <button type="button" ng-click="resetItem()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Purchase</h4>
+            </div>
+            <div class="modal-body">
+                 <div class="container">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="titledropdown">Title</label>
+                  <select class="form-control sm-input" name="titledropdown" ng-model="titleSelected" ng-options="titleval as titleval.title for titleval in titleList" ng-change="changedValue(titleSelected)" ></select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="title">Title</label>
+                  <input type="text" class="form-control sm-input" name="title" placeholder="Product Title" ng-model="form.title" readonly="true" required>
+                </div>
+              </div>
+              </div>
+               <div class="row">
+              <div class="col-md-12">
+                <div class="control-group product-control-group">
+                  <label  for="purchasedate">Purchase Date</label>
+                  <!-- <input type="text" class="form-control sm-input" name="description" placeholder="Purchase Date" ng-model="form.purchasedate" required> -->
+                  <div  class="datepicker" date-format="yyyy-MM-dd" selector="form-control">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Choose a date" ng-model="form.purchasedate" required />
+                        <span class="input-group-addon" style="cursor: pointer">
+                        <i class="fa fa-lg fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="item_type">Type of Product</label>
+                  <input type="text" class="form-control sm-input" name="item_type" placeholder="Type of Product" ng-model="form.item_type" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="price">Price of Product</label>
+                  <input type="text" ng-keyup="calculatePurchaseAmount()" class="form-control sm-input" name="price" placeholder="Price of Product" ng-model="form.price" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="quantity">Quantity</label>
+                  <input type="text" ng-keyup="calculatePurchaseAmount()" class="form-control sm-input" name="quantity" placeholder="Quantity of Product" ng-model="form.quantity" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="purchase_amount">Purchase Amount</label>
+                  <input type="text" class="form-control sm-input" name="purchase_amount" placeholder="Purchase Amount" ng-model="form.purchase_amount" readonly="true" required>
+                </div>
+              </div>
+            </div>
+          </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" ng-click="resetItem()" class="btn btn-default btn-xs" data-dismiss="modal">Close</button>
+              <button type="submit" ng-disabled="addItem.$invalid" class="btn btn-primary btn-xs">Submit</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Edit Modal -->
+<div class="modal fade" id="edit-item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="POST" name="editItem" role="form" ng-submit="saveEdit()">
+                <input ng-model="form.id" type="hidden" placeholder="Name" name="name" class="form-control" />
+            <div class="modal-header">
+                <button type="button" ng-click="resetItem()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit Purchase</h4>
+            </div>
+            <div class="modal-body">
+                 <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="control-group product-control-group">
+                  <label  for="name">Title</label>
+                  <input type="text" class="form-control sm-input" name="title" placeholder="Name" ng-model="form.title" required>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="control-group product-control-group">
+                  <label  for="purchasedate">Purchase Date</label>
+                  <!-- <input type="text" class="form-control sm-input" name="description" placeholder="Purchase Date" ng-model="form.purchasedate" required> -->
+                  <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Choose a date" ng-model="form.purchasedate" required />
+                        <span class="input-group-addon" style="cursor: pointer">
+                        <i class="fa fa-lg fa-calendar"></i>
+                        </span>
+                    </div>
+                </datepicker>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="item_type">Type of Product</label>
+                  <input type="text" class="form-control sm-input" name="item_type" placeholder="Type of Product" ng-model="form.item_type" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="price">Price of Product</label>
+                  <input type="text" ng-keyup="calculatePurchaseAmount()" class="form-control sm-input" name="price" placeholder="Price of Product" ng-model="form.price" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="quantity">Quantity</label>
+                  <input type="text" ng-keyup="calculatePurchaseAmount()" class="form-control sm-input" name="quantity" placeholder="Quantity of Product" ng-model="form.quantity" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="purchase_amount">Purchase Amount</label>
+                  <input type="text" class="form-control sm-input" name="purchase_amount" placeholder="Purchase Amount" ng-model="form.purchase_amount" required>
+                </div>
+              </div>
+            </div>
+          </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" ng-click="resetItem()" class="btn btn-default btn-xs" data-dismiss="modal">Close</button>
+            <button type="submit" ng-disabled="editItem.$invalid" class="btn btn-primary btn-xs create-crud">Submit</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
