@@ -1,0 +1,276 @@
+<div  id="item_page" class="container">
+  <div class="row">
+    <div class="col-lg-12 margin-tb">
+      <div class="pull-left">
+        <h1>Product Management</h1>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 margin-tb">
+      <div  class="btn-group pull-right" role="group" aria-label="Export"  style="padding-top:10px">
+        <button type="button" title="EXPORT OPTIONS" class="btn btn-primary"><i class="fa fa-download"></i></button>
+        <button type="button" title="EXCEL" ng-click="exportData('excel')" class="btn btn-default"><i class="fa fa-file-excel-o"  style="color:green"></i></button>
+        <button type="button" title="CSV" ng-click="exportData('csv')" class="btn btn-default"><i class="fa fa-file-text-o"  style="color:#428bca"></i></button>
+        <!-- <button type="button" ng-click="exportData('tab')" class="btn btn-default">TAB</button> -->
+        <button type="button" title="PDF" ng-click="exportData('pdf')" class="btn btn-default"><i class="fa fa-file-pdf-o"  style="color:#b94a48"></i></button>
+        <button type="button" title="PRINT" ng-click="exportData('print')" class="btn btn-default"><i class="fa fa-print" style="color: #607D8B;"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 margin-tb">
+      <!-- <div class="pull-left">
+      <h1>Item Management</h1>
+    </div> -->
+    <div class="pull-right"   style="padding-top:10px">
+      <div class="box-tools" style="display:inline-table">
+        <div class="input-group">
+          <input type="text" class="form-control input-sm ng-valid ng-dirty" size="10" placeholder="Search" ng-change="searchDB()" ng-model="searchText" name="table_search" title="" tooltip="" data-original-title="Min character length is 3">
+          <span class="input-group-addon"><i class="fa fa-search"></i> Search</span>
+        </div>
+      </div>
+      <button class="btn btn-success" data-toggle="modal" data-target="#add-item"><i class="fa fa-file-o"></i> New</button>
+    </div>
+  </div>
+</div>
+<br/>
+<div class="row">
+  <div class="margin-tb">
+    <div id="menu">
+      <div dir-paginate="value in data | itemsPerPage:5" total-items="totalItems" class="panel list-group item-list-panel">
+        <div class="list-group-item item-list" >
+          <div class="col-md-12 options-menu" data-toggle="collapse" data-target="#sm_{{ $index + 1 }}" data-parent="#menu">
+            <span class="label label-info">{{ $index + 1 }}</span> <span class="wrap-hidden wrap">{{ value.title }}</span>
+          </div>
+          <div class="options-action col-md-12">
+            Actions :
+            <span class="pull-right menu-tools btn btn-danger btn-sm" ng-click="remove(value,$index)" class="btn btn-danger btn-xs"> <i class="fa fa-trash-o"> </i></span>
+            <span class="pull-right menu-tools btn btn-primary btn-sm" data-toggle="modal" ng-click="edit(value.id)" data-target="#edit-item" > <i class="fa fa-pencil"> </i></span>
+            <span class="pull-right menu-tools btn btn-success btn-sm" data-toggle="collapse" data-target="#sm_{{ $index + 1 }}" data-parent="#menu" class="btn btn-danger btn-xs"> <i class="fa fa-eye"> </i></span>
+            <span class="pull-right menu-tools btn btn-violet btn-sm" data-toggle="modal" data-target="#purchase-item" ng-click="purchase(value)" class="btn btn-danger btn-xs"> <i class="fa fa-shopping-cart"> </i></span>
+
+          </div>
+        </div>
+        <div  id="sm_{{ $index + 1 }}" class="collapse list-view-panel">
+          <table id="product_list" class="table table-bordered table-responsive pagin-table product-list" >
+            <tr>
+              <td class="column-name">Title</td>
+              <td> <div class="wrap">{{ value.title }}</div></td>
+              <td class="column-name">Type</td>
+              <td><div class="wrap">{{ value.item_type }}</div></td>
+            </tr>
+            <tr>
+              <td class="column-name">Price</td>
+              <td><div class="wrap">{{ value.price }}</div></td>
+              <td class="column-name">Quantity</td>
+              <td><div class="wrap">{{ value.quantity }} {{ value.unit_measurement }}</div></td>
+            </tr>
+            <tr>
+              <td class="column-name">Details</td>
+              <td colspan="3"><div class="wrap-details">{{ value.description }}</div></td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <span class="pull-right menu-tools btn btn-primary btn-sm" ng-click="purchaseItemNow(value)"> <i class="fa fa-shopping-bag"> Buy</i></span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <dir-pagination-controls class="pull-right" on-page-change="pageChanged(newPageNumber)" template-url="templates/dirPagination.html" ></dir-pagination-controls>
+    </div>
+
+  </div>
+</div>
+<!-- Create Modal -->
+
+<div class="modal" id="add-item"  role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="POST" name="addItem" role="form" ng-submit="saveAdd()">
+        <div class="modal-header">
+          <button type="button" ng-click="resetItem()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myModalLabel">Create Item</h4>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="control-group product-control-group">
+                  <label  for="name">Title</label>
+                  <input type="text" class="form-control sm-input" name="title" placeholder="Name" ng-model="form.title" required>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="control-group product-control-group">
+                  <label  for="description">Description</label>
+                  <input type="text" class="form-control sm-input" name="description" placeholder="Description" ng-model="form.description" required>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="item_type">Type of Product</label>
+                  <input type="text" class="form-control sm-input" name="item_type" placeholder="Type of Product" ng-model="form.item_type" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="price">Price of Product</label>
+                  <input type="text" class="form-control sm-input" name="price" placeholder="Price of Product" ng-model="form.price" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="unit_measurement">Unit of Measurement</label>
+                  <select class="form-control sm-input" ng-model="form.unit_measurement" ng-options="uom for uom in unitOfMeasurements"></select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="quantity">Quantity of Product</label>
+                  <input type="text" class="form-control sm-input" name="quantity" placeholder="Quantity of Product" ng-model="form.quantity" required>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" ng-click="resetItem()" class="btn btn-default btn-xs" data-dismiss="modal">Close</button>
+          <button type="submit" ng-disabled="addItem.$invalid" class="btn btn-primary btn-xs">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal" id="purchase-item"  role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="POST" name="purchaseItemForm" role="form" ng-submit="purchaseItem()">
+        <div class="modal-header">
+          <button type="button" ng-click="resetItem()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myModalLabel">Purchase Item </h4>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="control-group product-control-group">
+                  <label  for="name">Title</label>
+                  <input type="text" class="form-control sm-input" name="title" placeholder="Name" ng-model="form.title" required>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="control-group product-control-group">
+                  <label  for="purchasedate">Purchase Date</label>
+                  <!-- <input type="text" class="form-control sm-input" name="description" placeholder="Purchase Date" ng-model="form.purchasedate" required> -->
+                  <datepicker date-format="yyyy-MM-dd" selector="form-control">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Choose a date" ng-model="form.purchasedate" required />
+                        <span class="input-group-addon" style="cursor: pointer">
+                        <i class="fa fa-lg fa-calendar"></i>
+                        </span>
+                    </div>
+                </datepicker>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="item_type">Type of Product</label>
+                  <input type="text" class="form-control sm-input" name="item_type" placeholder="Type of Product" ng-model="form.item_type" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="price">Price of Product</label>
+                  <input type="text" ng-keyup="calculatePurchaseAmount()" class="form-control sm-input" name="price" placeholder="Price of Product" ng-model="form.price" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="quantity">Quantity</label>
+                  <input type="text" ng-keyup="calculatePurchaseAmount()" class="form-control sm-input" name="quantity" placeholder="Quantity of Product" ng-model="form.quantity" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="purchase_amount">Purchase Amount</label>
+                  <input type="text" class="form-control sm-input" name="purchase_amount" placeholder="Purchase Amount" ng-model="form.purchase_amount" required>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" ng-click="resetItem()" class="btn btn-default btn-xs" data-dismiss="modal">Close</button>
+          <button type="submit" ng-disabled="purchaseItemForm.$invalid" class="btn btn-primary btn-xs">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+<!-- Edit Modal -->
+<div class="modal fade" id="edit-item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="POST" name="editItem" role="form" ng-submit="saveEdit()">
+        <input ng-model="form.id" type="hidden" placeholder="Name" name="name" class="form-control" />
+        <div class="modal-header">
+          <button type="button" ng-click="resetItem()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myModalLabel">Edit Item</h4>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="control-group product-control-group">
+                  <label  for="name">Title</label>
+                  <input type="text" class="form-control sm-input" name="title" placeholder="Name" ng-model="form.title" required>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="control-group product-control-group">
+                  <label  for="description">Description</label>
+                  <input type="text" class="form-control sm-input" name="description" placeholder="Description" ng-model="form.description" required>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="item_type">Type of Product</label>
+                  <input type="text" class="form-control sm-input" name="item_type" placeholder="Type of Product" ng-model="form.item_type" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="price">Price of Product</label>
+                  <input type="text" class="form-control sm-input" name="price" placeholder="Price of Product" ng-model="form.price" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="unit_measurement">Unit of Measurement</label>
+                  <select class="form-control sm-input" ng-model="form.unit_measurement" ng-options="uom for uom in unitOfMeasurements"></select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="control-group product-control-group">
+                  <label  for="quantity">Quantity of Product</label>
+                  <input type="text" class="form-control sm-input" name="quantity" placeholder="Quantity of Product" ng-model="form.quantity" required>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" ng-click="resetItem()" class="btn btn-default btn-xs" data-dismiss="modal">Close</button>
+          <button type="submit" ng-disabled="editItem.$invalid" class="btn btn-primary btn-xs create-crud">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,119 @@
+.product-control-group{
+  padding: 5px;
+}
+div#mid_panel {
+    margin-top: 200px;
+}
+.mid_panel_header {
+    color: #ffffff !important;
+    background-color: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+}
+.navbar-default-panel{
+  background-color: #4CAF50 !important;
+  color: #ffffff !important;
+  border-color: #4CAF50 !important;
+}
+.panel-default-custom {
+    border-color: #4caf50;
+}
+.navbar-brand{
+/*color: #ffffff !important;*/
+color: #041d29 !important;
+font-size: large;
+font-weight: bold;
+font-family: serif;
+}
+.navbar-default .navbar-nav>li>a:hover {
+    color: #1d4b61 !important;
+}
+.navbar-nav>li:hover {
+    background-color: #fbeed5 !important;
+
+}
+.navbar-default .navbar-nav>li>a {
+  color: #fbeed5 !important;
+  font-weight: bold;
+  font-family: serif;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  /*background-color: #468847 !important;*/
+}
+.navbar-default .navbar-toggle {
+  background-color: #468847 !important;
+}
+@media only screen and (max-width: 500px) {
+
+    div#mid_panel {
+        margin-top: 10px;
+    }
+    .product-list{
+      width: 100% !important;
+    }
+    .wrap {
+      word-break: break-all;
+      width: 60px;
+    }
+    .wrap-details{
+      width: 220px;
+    }
+}
+.column-name{
+  background-color: #e6f1db;
+  font-weight: bold;
+  color: #9c3110;
+}
+.list-view-panel{
+  padding: 10px;
+  border: 1px solid #96d0ca;
+  background-color: #abe8e3;
+}
+.product-list{
+  background-color: #fff;
+  margin-bottom: 0px !important;
+}
+.item-list{
+  background-color: #efefef;
+  font-size: 15px;
+  font-weight: bold;
+  font-style: italic;
+  color: #879fab;
+  font-family: monospace;
+}
+.item-list-panel{
+  margin-bottom: 1px !important;
+}
+table td > div {
+  word-break: break-all;
+}
+.wrap {
+   white-space: pre-wrap;      /* CSS3 */
+   white-space: -moz-pre-wrap; /* Firefox */
+   white-space: -pre-wrap;     /* Opera <7 */
+   white-space: -o-pre-wrap;   /* Opera 7 */
+   word-wrap: break-word;      /* IE */
+}
+.menu-tools{
+  margin-right: 5px;
+  margin-left: 5px;
+}
+.wrap-hidden{
+  overflow: hidden;
+}
+.options-menu{
+  border: 1px solid #d2e8ad;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #f8fbf3;
+    margin: 5px;
+}
+.options-action{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: 5px;
+}
+.btn-violet{
+  background-color: blueviolet;
+  border-color: blueviolet;
+  color: #fff !important;
+}

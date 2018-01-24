@@ -1,0 +1,65 @@
+<div class="container">
+	<h1>Listing Example with smart-table and AngularJS</h1>
+	<div ng-show="loading"><h3>Loading...</h3></div>
+	<table st-table="display_records"  st-safe-src="employees" class="table table-striped">
+	<thead>
+		<tr>
+			<th>Profile</th>
+			<th width="100px">Name</th>
+			<th st-sort="salary">Salary</th>
+			<th>Age</th>
+			<th>Action</th>
+		</tr>
+		<tr>
+			<th colspan="5">
+				<input st-search placeholder="global search" class="input-sm form-control" type="search"/>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr st-select-row="row" st-select-mode="multiple" ng-repeat="row in display_records">
+			<td><img class="img-thumbnail img-responsive" alt="image" src="" style="width: 50px; height: 50px;"/></td>
+			<td>{{row.employee_name}}</td>
+			<td>{{row.employee_salary}}</td>
+			<td>{{row.employee_age}}</td>
+			<td>
+        <!-- <button data-toggle="modal" ng-click="edit(value.id)" data-target="#edit-data" class="btn btn-primary btn-xs">Edit</button> -->
+				<a type="button" data-toggle="modal" ng-click="viewRecord(row.id)" data-target="#view-employee" class="btn btn-sm btn-info">
+					<i class="glyphicon glyphicon-eye-open">
+					</i>
+				</a>
+			</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="5" class="text-center">
+				<div st-pagination="" st-items-by-page="itemsByPage"></div>
+			</td>
+		</tr>
+	</tfoot>
+</table>
+</div>
+<!-- Modal -->
+  <div class="modal fade" id="view-employee"tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">View Employee</h4>
+        </div>
+        <div class="modal-body">
+        <div class="control-group">
+          <label class="sr-only" for="name">employee_name</label>
+          <input type="text" class="form-control sm-input" id="employee_name" ng-model="view_employee.employee_name" readonly>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>

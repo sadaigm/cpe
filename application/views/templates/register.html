@@ -1,0 +1,69 @@
+<style>
+body{
+		background-color: #f3d095;
+}
+
+</style>
+<div id="mid_panel" class="container">
+  <div class="row">
+      <div  class="col-md-4 col-md-offset-4">
+  			<div class="panel panel-default panel-default-custom">
+  				<div class="panel-heading mid_panel_header">
+            <strong class="">Customer Registration</strong>
+        </div>
+        <div class="panel-body">
+          <form ng-submit="register()" class="form-horizontal" role="form">
+              <div class="form-group">
+                <label for="username" class="col-sm-3 control-label">Name</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" ng-model="name" placeholder="Customer Name" required="" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="username" class="col-sm-3 control-label">Username</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" ng-model="username" placeholder="Username" required="" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="password" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" ng-model="password" placeholder="Password" required=""/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="role" class="col-sm-3 control-label">Role</label>
+                <div class="col-sm-9">
+                  <select class="form-control" id="role" name="role" ng-model="role" required>
+                    <option value="customer">Customer</option>
+                    <option value="vendor">Vendor</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- <div class="form-group">
+              <button type="submit"  class="btn btn-success">Register</button>
+              <span class="text-danger">{{ error }}</span>
+            </div> -->
+            <div class="form-group last">
+              <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-success btn-sm">Register</button>
+                <button type="reset" class="btn btn-default btn-sm">Reset</button>
+              </div>
+
+            </div>
+            <div class="col-md-12">
+              <span class="text-danger">{{ error }}</span>
+            </div>
+        </form>
+      </div>
+      <div class="panel-footer">
+        Already Registered? <a href="#/login" class="">Sign In here</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
