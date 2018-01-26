@@ -58,7 +58,7 @@ app.service('user', function($rootScope) {
 			$rootScope.headers['User-ID'] = id;
 			$rootScope.headers['Authorization'] = token;
 		}
-		$rootScope.page.dataLoaded = false;
+		this.deactivatePageStatus();
 		return loggedin;
 	};
 
@@ -92,5 +92,11 @@ app.service('user', function($rootScope) {
 		$rootScope.isloggedin = loggedin;
 		$rootScope.headers['User-ID'] = "";
 		$rootScope.headers['Authorization'] = "";
+	}
+	this.activatePageStatus = function() {
+		$rootScope.page.dataLoaded = true;
+	}
+	this.deactivatePageStatus = function() {
+		$rootScope.page.dataLoaded = false;
 	}
 })

@@ -3,12 +3,13 @@ app.controller('RegisterController', function($scope, dataFactory, $rootScope, $
 	$scope.error = '';
 	$scope.role = 'customer';
 	var headers = $rootScope.headers;
+	user.activatePageStatus();
 	$scope.register = function() {
 		var username = $scope.username;
 		var password = $scope.password;
 		var name = $scope.name;
 		var role = $scope.role;
-
+		user.deactivatePageStatus();
 
 		var postdata = {
 			username: $scope.username,

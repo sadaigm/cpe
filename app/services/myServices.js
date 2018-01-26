@@ -1,4 +1,4 @@
-app.factory('dataFactory', function($http, growl) {
+app.factory('dataFactory', function($http, growl, user) {
 	var myService = {
 		httpRequest: function(url, method, header, params, dataPost, upload) {
 			var passParameters = {};
@@ -74,6 +74,7 @@ app.factory('dataFactory', function($http, growl) {
 				// 	text: 'An error occured while processing your request.'
 				// });
 			});
+			user.activatePageStatus();
 			return promise;
 		}
 	};

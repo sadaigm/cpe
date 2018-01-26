@@ -36,7 +36,6 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 	function getResultsPage(pageNumber) {
 		if (!$.isEmptyObject($scope.libraryTemp)) {
 			dataFactory.httpRequest('purchaseList?search=' + $scope.searchText + '&page=' + pageNumber + '&user=' + current_user, 'GET', headers).then(function(data) {
-				$rootScope.page.dataLoaded = true;
 				console.log(data);
 				$scope.data = data.response.data;
 				$scope.totalItems = data.response.total;
@@ -44,12 +43,12 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 			});
 		} else {
 			dataFactory.httpRequest('purchaseList?page=' + pageNumber + '&user=' + current_user, 'GET', headers).then(function(data) {
-				$rootScope.page.dataLoaded = true;
 				console.log(data);
 				clearSearch();
 				$scope.data = data.response.data;
 				$scope.totalItems = data.response.total;
 				$scope.pageNumber = pageNumber;
+
 			});
 		}
 	}

@@ -3,6 +3,13 @@ app.config(['$routeProvider',
 	function($routeProvider) {
 		$routeProvider.
 		when('/home', {
+			resolve: {
+				check: function($location, user) {
+					if (!user.isUserLoggedIn()) {
+						$location.path('/login');
+					}
+				},
+			},
 			templateUrl: 'templates/home.html',
 			controller: 'AdminController'
 		}).when('/logout', {

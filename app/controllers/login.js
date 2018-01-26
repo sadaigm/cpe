@@ -3,6 +3,7 @@ app.controller('LoginController', function($scope, dataFactory, $rootScope, $htt
 	$rootScope.page.dataLoaded = true;
 	$scope.error = '';
 	$scope.role = 'customer';
+	user.activatePageStatus();
 	var headers = $rootScope.headers;
 	$scope.login = function() {
 		var username = $scope.username;
