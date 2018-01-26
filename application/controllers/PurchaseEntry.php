@@ -6,6 +6,7 @@ class PurchaseEntry extends CI_Controller {
 	public $table_name ="purchase_entry";
 	public $item_table ="items";
 	public $id_pk ="id";
+	public $page_limit = 5;
 	public function index()
 	{
 		$method = $_SERVER['REQUEST_METHOD'];
@@ -32,6 +33,10 @@ class PurchaseEntry extends CI_Controller {
 					$this->db->where('user',$user);
 					$condition['user'] = $user;
 				}
+				if(!empty($this->input->get("limit"))){
+					$this->page_limit = $this->input->get("limit");
+				}
+
 
 				$count_query = $this->db->get_where($this->table_name,$condition);
 				if(!empty($this->input->get("search"))){
@@ -42,7 +47,7 @@ class PurchaseEntry extends CI_Controller {
 				// 	$user = $this->input->get("user");
 				// 	$this->db->where('user',$user);
 				// }
-				$this->db->limit(5, ($this->input->get("page",1) - 1) * 5);
+				$this->db->limit($this->page_limit, ($this->input->get("page",1) - 1) * $this->page_limit);
 				$query = $this->db->get_where($this->table_name,$condition);
 				$data['data'] = $query->result();
 				//$data['total'] = $this->db->count_all("items");
@@ -77,7 +82,7 @@ class PurchaseEntry extends CI_Controller {
 				   foreach ($query->result() as $row)
 				   {
 				      $productNames[] = array('title' => $row->title, 'idfk'=> $row->id);
-				      
+
 				   }
 				}
 				$respStatus['response']=$query->result();

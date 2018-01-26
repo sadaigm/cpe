@@ -12,6 +12,8 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 	$scope.form = {};
 	$scope.form.price = 0;
 	$scope.form.quantity = 0;
+	$scope.page_limit = 5;
+	$scope.pages = [05, 10, 15, 20, 25];
 	var headers = $rootScope.headers;
 	$scope.pageChanged = function(newPage) {
 		getResultsPage(newPage);
@@ -35,14 +37,14 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 
 	function getResultsPage(pageNumber) {
 		if (!$.isEmptyObject($scope.libraryTemp)) {
-			dataFactory.httpRequest('purchaseList?search=' + $scope.searchText + '&page=' + pageNumber + '&user=' + current_user, 'GET', headers).then(function(data) {
+			dataFactory.httpRequest('purchaseList?search=' + $scope.searchText + '&limit=' + $scope.page_limit + '&page=' + pageNumber + '&user=' + current_user, 'GET', headers).then(function(data) {
 				console.log(data);
 				$scope.data = data.response.data;
 				$scope.totalItems = data.response.total;
 				$scope.pageNumber = pageNumber;
 			});
 		} else {
-			dataFactory.httpRequest('purchaseList?page=' + pageNumber + '&user=' + current_user, 'GET', headers).then(function(data) {
+			dataFactory.httpRequest('purchaseList?page=' + pageNumber + '&limit=' + $scope.page_limit + '&user=' + current_user, 'GET', headers).then(function(data) {
 				console.log(data);
 				clearSearch();
 				$scope.data = data.response.data;
@@ -110,6 +112,7 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 				$scope.data = $scope.libraryTemp;
 				$scope.totalItems = $scope.totalItemsTemp;
 				$scope.libraryTemp = {};
+				$scope.page_limit = 5;
 			}
 		}
 	}
@@ -126,6 +129,9 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 	}
 	$scope.changedValue = function(titleSelected) {
 		constructPurchaseForm(titleSelected);
+	}
+	$scope.changePageLimit = function() {
+		getResultsPage(1);
 	}
 	$scope.getProductNames = function() {
 		dataFactory.httpRequest('getProductNames?user=' + current_user, 'GET', headers).then(function(data) {

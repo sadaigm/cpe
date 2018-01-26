@@ -23,16 +23,25 @@
         <!-- <div class="pull-left">
             <h1>Item Management</h1>
         </div> -->
+
         <div class="pull-right"   style="padding-top:10px">
             <div class="box-tools" style="display:inline-table">
               <div class="input-group">
+
                   <input type="text" class="form-control input-sm ng-valid ng-dirty" size="10" placeholder="Search" ng-change="searchDB()" ng-model="searchText" name="table_search" title="" tooltip="" data-original-title="Min character length is 3">
                   <span class="input-group-addon"><i class="fa fa-search"></i> Search</span>
               </div>
             </div>
             <button class="btn btn-success" ng-click="getProductNames()" data-toggle="modal" data-target="#add-item" ><i class="fa fa-file-o"></i> New</button>
+
+
+
         </div>
     </div>
+</div>
+<br/>
+<div class="row">
+  <select style="padding-left: 10px;margin-left: -1px;width: 65px;" class="form-control sm-input" name="page_limit" ng-model="page_limit" ng-options="page for page in pages" ng-change="changePageLimit()" ></select>
 </div>
 <br/>
 <div class="row">
@@ -54,7 +63,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr dir-paginate="value in data | itemsPerPage:5" total-items="totalItems">
+        <tr dir-paginate="value in data | itemsPerPage:page_limit" total-items="totalItems">
            <td><input type="checkbox" ng-model="value.isChecked" ng-change="selectEntity($index)"></td>
             <td>{{ $index + 1 }}</td>
             <td>{{ value.title }}</td>
