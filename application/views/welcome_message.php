@@ -3,6 +3,12 @@
 	<title>Codeigniter 3</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<style>
+		.preloader {
+		    padding: 50px;
+		    background: url('app/3party/img/preloader_3.gif') no-repeat 50% 50% transparent;
+		}
+			</style>
 	<!-- Fonts -->
 	<link href='app/3party/css/family_OpenSans.css' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="app/3party/cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -49,7 +55,7 @@
 	<script src="app/3party/cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
  	<script src="app/3party/cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.min.js"></script>
 <link rel="stylesheet"  href="app/3party/css/product_item.css">
 
 </head>
@@ -72,7 +78,7 @@
 					<li><a href="#/listitems">Item</a></li>
 					<li><a href="#/items">List of Items</a></li>
 					<li><a href="#/purchaseentries">Purchase Entry</a></li>
-					
+
 				</ul>
 			<!-- </div>
 			<div  class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> -->
@@ -86,6 +92,9 @@
 	</nav>
 	<div class="container">
 		<div growl></div>
+		<div ng-hide="page.dataLoaded" class="preloader">
+			 <!-- image here via CSS -->
+	 </div>
 		<ng-view></ng-view>
 	</div>
 </body>

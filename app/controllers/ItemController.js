@@ -51,6 +51,7 @@ app.controller('ItemController', function(dataFactory, $scope, $http, $rootScope
 	function getResultsPage(pageNumber) {
 		if (!$.isEmptyObject($scope.libraryTemp)) {
 			dataFactory.httpRequest('items?search=' + $scope.searchText + '&page=' + pageNumber + '&user=' + current_user, 'GET', headers).then(function(data) {
+				$rootScope.page.dataLoaded = true;
 				console.log(data);
 				$scope.data = data.response.data;
 				$scope.totalItems = data.response.total;
@@ -58,6 +59,7 @@ app.controller('ItemController', function(dataFactory, $scope, $http, $rootScope
 			});
 		} else {
 			dataFactory.httpRequest('items?page=' + pageNumber + '&user=' + current_user, 'GET', headers).then(function(data) {
+				$rootScope.page.dataLoaded = true;
 				console.log(data);
 				clearSearch();
 				$scope.data = data.response.data;

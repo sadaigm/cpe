@@ -1,5 +1,6 @@
 app.controller('LoginController', function($scope, dataFactory, $rootScope, $http, $location, user) {
 	//$rootScope.title = "Customer Login";
+	$rootScope.page.dataLoaded = true;
 	$scope.error = '';
 	$scope.role = 'customer';
 	var headers = $rootScope.headers;

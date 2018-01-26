@@ -32,9 +32,11 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 		$scope.form.price = 0;
 		$scope.form.quantity = 0;
 	}
+
 	function getResultsPage(pageNumber) {
 		if (!$.isEmptyObject($scope.libraryTemp)) {
 			dataFactory.httpRequest('purchaseList?search=' + $scope.searchText + '&page=' + pageNumber + '&user=' + current_user, 'GET', headers).then(function(data) {
+				$rootScope.page.dataLoaded = true;
 				console.log(data);
 				$scope.data = data.response.data;
 				$scope.totalItems = data.response.total;
@@ -42,6 +44,7 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 			});
 		} else {
 			dataFactory.httpRequest('purchaseList?page=' + pageNumber + '&user=' + current_user, 'GET', headers).then(function(data) {
+				$rootScope.page.dataLoaded = true;
 				console.log(data);
 				clearSearch();
 				$scope.data = data.response.data;
@@ -111,6 +114,7 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 			}
 		}
 	}
+
 	function constructPurchaseForm(selectedProduct) {
 		selectedProduct.purchase_amount = selectedProduct.quantity * selectedProduct.price;
 		console.log(selectedProduct);
@@ -121,16 +125,15 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 		$scope.form.title = selectedProduct.title;
 		$scope.form.purchase_amount = selectedProduct.purchase_amount;
 	}
-	$scope.changedValue =  function(titleSelected){
+	$scope.changedValue = function(titleSelected) {
 		constructPurchaseForm(titleSelected);
 	}
-	$scope.getProductNames = function()
-	{
+	$scope.getProductNames = function() {
 		dataFactory.httpRequest('getProductNames?user=' + current_user, 'GET', headers).then(function(data) {
 			console.log(data.response);
-				$scope.titleList = data.response;
-				
-			});
+			$scope.titleList = data.response;
+
+		});
 
 	}
 	$scope.saveAdd = function() {
@@ -140,6 +143,7 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 			$(".modal").modal("hide");
 		});
 	}
+
 	function getCurTimeStamp() {
 		var date = new Date();
 		return $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss');
@@ -164,7 +168,7 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 		return $filter('date')(new Date(), 'yyyy-MM-dd');
 	}
 	$scope.edit = function(id) {
-		dataFactory.httpRequest('editPurchaseEntry/' + id,'GET',headers).then(function(data) {
+		dataFactory.httpRequest('editPurchaseEntry/' + id, 'GET', headers).then(function(data) {
 			console.log(data);
 			$scope.form = data;
 		});
@@ -179,7 +183,7 @@ app.controller('PurchaseController', function(dataFactory, $scope, $http, $rootS
 	$scope.remove = function(item, index) {
 		var result = confirm("Are you sure delete this item?");
 		if (result) {
-			dataFactory.httpRequest('deletePurchaseEntry/' + item.id, 'DELETE',headers).then(function(data) {
+			dataFactory.httpRequest('deletePurchaseEntry/' + item.id, 'DELETE', headers).then(function(data) {
 				$scope.data.splice(index, 1);
 			});
 		}

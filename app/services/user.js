@@ -7,6 +7,8 @@ app.service('user', function($rootScope) {
 	var token;
 	var timestamp;
 	var expirationMin = "60000";
+	$rootScope.page = {};
+	$rootScope.page.dataLoaded = false;
 	$rootScope.userData;
 	$rootScope.headers = {
 		"Client-Service": "frontend-client",
@@ -56,6 +58,7 @@ app.service('user', function($rootScope) {
 			$rootScope.headers['User-ID'] = id;
 			$rootScope.headers['Authorization'] = token;
 		}
+		$rootScope.page.dataLoaded = false;
 		return loggedin;
 	};
 
