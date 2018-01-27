@@ -25,7 +25,8 @@ class AuthModel extends CI_Model {
     {
       $q  = $this->db->select('password,id')->from('users')->where('username',$username)->get()->row();
       if($q == ""){
-        $hashed_password = crypt($password,$this->auth_key);
+        //$hashed_password = crypt($password,$this->auth_key);
+        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
        $this->db->trans_start();
        $this->db->insert('users',array('name' => $name,'username' => $username,'password' => $hashed_password,'role' => $role,));
        if ($this->db->trans_status() === FALSE){
@@ -46,9 +47,11 @@ class AuthModel extends CI_Model {
         if($q == ""){
             return array('status' => 200,'customstatus' => 401,'message' => 'Username/Role Unauthorized.');
         } else {
-            $hashed_password = $q->password;
+            $db_hashed_password = $q->password;
             $id              = $q->id;
-            if (hash_equals($hashed_password, crypt($password, $hashed_password)) ) {
+            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+           // if (hash_equals($hashed_password, crypt($password, $this->auth_key)) ) {
+             if (password_verify($password,$db_hashed_password) ) {
                $last_login = date('Y-m-d H:i:s');
                $token = crypt(substr( md5(rand()), 0, 7),$this->auth_key);
                $expired_at = date("Y-m-d H:i:s", strtotime('+12 hours'));
@@ -83,10 +86,10 @@ class AuthModel extends CI_Model {
         $q  = $this->db->select('expired_at')->from('users_authentication')->where('users_id',$users_id)->where('token',$token)->get()->row();
         if($q == ""){
           //return json_output(401,array('status' => 401,'message' => 'Unauthorized.'));
-            return array('status' => 401,'message' => 'Unauthorized.');
+            return array('status' => 401,'customstatus' => 401,'message' => 'Unauthorized.');
         } else {
             if($q->expired_at < date('Y-m-d H:i:s')){
-                return array('status' => 401,'message' => 'Your session has been expired.');
+                return array('status' => 401,'customstatus' => 401,'message' => 'Your session has been expired.');
             } else {
                 $updated_at = date('Y-m-d H:i:s');
                 $expired_at = date("Y-m-d H:i:s", strtotime('+12 hours'));

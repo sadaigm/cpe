@@ -37,7 +37,6 @@ app.controller('RegisterController', function($scope, dataFactory, $rootScope, $
 				$scope.username = "";
 				$scope.name = "";
 				$scope.password = "";
-				$scope.role = "";
 			}
 		})
 	}

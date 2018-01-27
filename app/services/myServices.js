@@ -27,16 +27,27 @@ app.factory('dataFactory', function($http, growl, user) {
 				console.log(response);
 				if (response.status == 200) {
 					if (!(angular.isUndefined(response.data.message) && angular.isUndefined(response.data.customstatus))) {
-						growl.success(response.data.message, {
+						if(response.data.customstatus === 200)
+						{
+							growl.success(response.data.message, {
 							title: 'Response Code - ' + response.data.customstatus,
 							ttl: 1000
 						});
+						}
+						else
+						{
+							growl.error(response.data.message, {
+							title: 'Response Code - ' + response.data.customstatus,
+							ttl: 1000
+						});
+						}
 					}
 					return response.data;
 				} else {
 					if (!(angular.isUndefined(response.data.message) && angular.isUndefined(response.data.customstatus))) {
 						growl.error(response.data.message, {
-							title: 'Response Code - ' + response.data.customstatus
+							title: 'Response Code - ' + response.data.customstatus,
+							ttl: 2000
 						});
 					}
 					return;
@@ -47,7 +58,8 @@ app.factory('dataFactory', function($http, growl, user) {
 						return;
 					}
 					growl.error(response.data, {
-						title: 'Application!'
+						title: 'Application!',
+						ttl: 5000
 					});
 					// $.gritter.add({
 					// 	title: 'Application',
@@ -57,7 +69,8 @@ app.factory('dataFactory', function($http, growl, user) {
 				}
 				if (response.data.jsMessage) {
 					growl.error(response.data.jsMessage, {
-						title: response.data.jsTitle
+						title: response.data.jsTitle,
+						ttl: 1000
 					});
 					// $.gritter.add({
 					// 	title: response.data.jsTitle,
@@ -67,7 +80,8 @@ app.factory('dataFactory', function($http, growl, user) {
 				return response.data;
 			}, function() {
 				growl.error("An error occured while processing your request.", {
-					title: "Application Error"
+					title: "Application Error",
+					ttl: 5000
 				});
 				// $.gritter.add({
 				// 	title: 'Application',

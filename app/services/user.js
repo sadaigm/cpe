@@ -6,7 +6,8 @@ app.service('user', function($rootScope) {
 	var role;
 	var token;
 	var timestamp;
-	var expirationMin = "60000";
+	// this value should be in sync with backend
+	var expirationduration = "12";
 	$rootScope.page = {};
 	$rootScope.page.dataLoaded = false;
 	$rootScope.userData;
@@ -63,7 +64,7 @@ app.service('user', function($rootScope) {
 	};
 
 	this.saveData = function(data) {
-		var expirationMS = expirationMin * 60 * 1000;
+		var expirationMS = expirationduration * 3600 * 1000;
 		timestamp = new Date().getTime() + expirationMS;
 		username = data.user;
 		role = data.role;
